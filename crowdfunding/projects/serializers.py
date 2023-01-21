@@ -22,6 +22,8 @@ class PledgeSerializer(serializers.ModelSerializer):
         fields = ['id', 'amount', 'comment', 'anonymous', 'project', 'supporter' ]
         read_only_fields =['id', 'supporter']
 
+class ProjectDetailSerializer(ProjectSerializer):
+    pledges = PledgeSerializer(many=True, read_only=True)
 
     # date created doesn't need auto_date_now because it isn't dealing with the database like the models are
 
