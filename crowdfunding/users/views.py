@@ -2,9 +2,11 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, ChangePasswordSerializer
 
 class CustomUserList(APIView):
 
@@ -24,7 +26,7 @@ class CustomUserDetail(APIView):
 
     def get_object(self, pk):
         try:
-            return CustomUser.opjects.get(pk=pk)
+            return CustomUser.objects.get(pk=pk)
         except CustomUser.DoesNotExist:
             raise Http404
 
@@ -32,5 +34,11 @@ class CustomUserDetail(APIView):
         user = self.get_object(pk)
         serializer = CustomUserSerializer(user)
         return Response(serializer.data)
+
+class ChangePasswordView(generics.UpdateAPIView):
+
+    queryset = CustomUser.objects.all()
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ChangePasswordSerializer
 
 # Create your views here.

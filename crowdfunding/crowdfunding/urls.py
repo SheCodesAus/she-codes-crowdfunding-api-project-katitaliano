@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
 from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
@@ -24,3 +25,11 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path("", include('projects.urls')),
 ]
+
+def blanket_404_response(request, exception):
+        return JsonResponse({
+            'status_code': 404,
+            'error': "Oops, something went wrong!"
+        })
+
+handler404 = blanket_404_response

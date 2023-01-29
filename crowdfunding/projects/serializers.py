@@ -6,7 +6,7 @@ class ProjectSerializer(serializers.Serializer):
 	id = serializers.ReadOnlyField()
 	title = serializers.CharField(max_length=200)
 	description = serializers.CharField(max_length=None)
-	goal= serializers.IntegerField()
+	target= serializers.IntegerField()
 	image = serializers.URLField()
 	is_open = serializers.BooleanField()
 	date_created = serializers.DateTimeField()
@@ -18,7 +18,7 @@ class ProjectSerializer(serializers.Serializer):
 	def update(self, instance, validated_data):
             instance.title = validated_data.get('title', instance.title)
             instance.description = validated_data.get('description', instance.description)
-            instance.goal = validated_data.get('goal', instance.goal)
+            instance.target = validated_data.get('target', instance.target)
             instance.image = validated_data.get('image', instance.image)
             instance.is_open = validated_data.get('is_open', instance.is_open)
             instance.date_created = validated_data.get('date_created', instance.date_created)

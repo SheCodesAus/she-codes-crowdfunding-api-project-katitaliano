@@ -7,6 +7,7 @@ from rest_framework import status, generics, permissions
 from .models import Project, Pledge
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer
 from .permissions import IsOwnerOrReadOnly
+from datetime import datetime, timedelta
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
@@ -15,15 +16,39 @@ class ProjectList(APIView):
         projects = Project.objects.all()
         serializer = ProjectSerializer(projects, many=True)
         return Response(serializer.data)
-
+    
     def post(self, request):
         serializer = ProjectSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(owner=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+            return Response(
+                    serializer.data,
+                    status=status.HTTP_201_CREATED)
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST)
+
+    # def post(self, request):
+    #     serializer = ProjectSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         start_date = datetime.now()
+    #         end_date = datetime.now() - timedelta(days=365)
+    #         projects_annual = Project.objects.filter(owner=request.user, date_created=range(start_date,end_date)).count()
+    #         print(projects_annual)
+    #         if  int(projects_annual) <3:
+    #             serializer.save(owner=request.user)
+    #             return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #         else:
+    #             return Response(detail= "You have reached your project limit for the last year")
+    #     return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
+
+
 
 class ProjectDetail(APIView):
+    permission_classes = [
+          permissions.IsAuthenticatedOrReadOnly,
+          IsOwnerOrReadOnly
+    ]
 
     def get_object(self, pk):
         try:
@@ -60,7 +85,5 @@ class PledgeList(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(supporter=self.request.user)
 
-
-
-
-
+# class PledgeDetail(generics.RetrieveUpdateDestroyAPIView):
+# this will be for editing/deleting pledges

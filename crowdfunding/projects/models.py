@@ -6,7 +6,7 @@ User = get_user_model()
 class Project(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    goal= models.IntegerField()
+    target= models.IntegerField()
     image = models.URLField()
     is_open = models.BooleanField()
     date_created = models.DateTimeField(auto_now_add=True)
