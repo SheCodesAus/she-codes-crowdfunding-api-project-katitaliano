@@ -98,11 +98,11 @@ This crowdfunding platform will focus on the most important needs of persons wit
 ​
 ## Part A Submission
 ​
-- [ ] A link to the deployed project.
-- [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint.
-- [ ] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint.
-- [ ] A screenshot of Insomnia, demonstrating a token being returned.
-- [ ] Your refined API specification and Database Schema.
+- [ ] A link to the deployed project. https://wild-meadow-5490.fly.dev/projects/
+- [ ] A screenshot of Insomnia, demonstrating a successful GET method for any endpoint- SEE GITHUB
+- [ ] A screenshot of Insomnia, demonstrating a successful POST method for any endpoint. SEE GITHUB
+- [ ] A screenshot of Insomnia, demonstrating a token being returned. SEE GITHUB
+- [ ] Your refined API specification and Database Schema. SEE GITHUB
 ​
 ### Step by step instructions for how to register a new user and create a new project (i.e. endpoints and body data).
 ​
