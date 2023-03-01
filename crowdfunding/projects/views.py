@@ -7,7 +7,7 @@ from rest_framework import status, generics, permissions
 from .models import Project, Pledge
 from .serializers import ProjectSerializer, PledgeSerializer, ProjectDetailSerializer
 from .permissions import IsOwnerOrReadOnly
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
 
 class ProjectList(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
@@ -27,6 +27,7 @@ class ProjectList(APIView):
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST)
+
 
     # def post(self, request):
     #     serializer = ProjectSerializer(data=request.data)
