@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
 ]
 
-AUTH_USER_MODEL = 'users.CustomUser',
+AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -63,7 +63,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'crowdfunding.urls',
+ROOT_URLCONF = 'crowdfunding.urls'
 
 TEMPLATES = [
     {
