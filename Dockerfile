@@ -10,7 +10,6 @@ RUN mkdir -p /code
 WORKDIR /code
 
 COPY requirements.txt /tmp/requirements.txt
-
 RUN set -ex && \
     pip install --upgrade pip && \
     pip install -r /tmp/requirements.txt && \
@@ -23,5 +22,6 @@ RUN chmod +x /code/run.sh
 
 EXPOSE 8000
 
-# replace demo.wsgi with <project_name>.wsgi
+# TODO: replace demo.wsgi with <project_name>.wsgi
+# CMD ["gunicorn", "--bind", ":8000", "--workers", "2", "demo.wsgi"]
 CMD ["/code/run.sh"]

@@ -96,6 +96,7 @@ DATABASES = {
 # Set the STATIC_URL
 STATIC_URL = '/static/'  # Replace '/static/' with the URL or path where you want to serve static files from
 
-
+# Set the path to the directory where static files will be collected
+# STATIC_ROOT = '/'
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password
