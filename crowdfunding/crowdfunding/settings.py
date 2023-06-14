@@ -10,37 +10,50 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6f5fiv53l$d=%d_0_8&znvd!6&d3rfy-qowzswx^u)i-p_dsm6'
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY',
+    'django-insecure-6f5fiv53l$d=%d_0_8&znvd!6&d3rfy-qowzswx^u)i-p_dsm6'
+    )
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG') != 'False'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['wild-meadow-5490.fly.dev', '127.0.0.1', 'localhost']
+CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ['https://*.fly.dev'] #CSRF (Cross-Site Request Forgery) trusted origins are a security feature in Django.CSRF is a type of attack where an attacker tricks a user's web browser into making a malicious request to a different website on which the user has an active session. To prevent this, Django automatically generates and validates a CSRF token for each user session. The CSRF_TRUSTED_ORIGINS setting in Django allows you to specify a list of trusted origins that are exempt from CSRF token validation.
 
 # Application definition
 
 INSTALLED_APPS = [
+    'projects.apps.ProjectsConfig', # added 'projects' app
+    'rest_framework', # added 'rest_framework' for RESTful API support
+    'rest_framework.authtoken', # added 'rest_framework.authtoken' for token-based authentication
+    'corsheaders', # added 'corsheaders' for Cross-Origin Resource Sharing (CORS) support
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig', # added 'users' app
 ]
 
+AUTH_USER_MODEL = 'users.CustomUser' # set custom user model for authentication
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', # added 'corsheaders.middleware.CorsMiddleware' for CORS support
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',#intercepts requests for static files (such as CSS, JavaScript, and image files) and serves them directly from the Django application using the WhiteNoise library. 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,6 +70,7 @@ TEMPLATES = [
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
+            #Context processors are used to make data available globally across multiple views/templates in a Django project. Defined as Python functions that take a request object as input and return a dictionary of key-value pairs that will be added to the context. 
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -67,20 +81,23 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'crowdfunding.wsgi.application'
-
+WSGI_APPLICATION = 'crowdfunding.wsgi.application' # a string that specifies the import path to the the Web Server Gateway Interface (WSGI) application. WSGI defines a common interface between web servers and web applications or frameworks in Python. Specifies the Python callable object (the "application" or "app") that will handle incoming HTTP requests and generate HTTP responses.
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.sqlite3', # using SQLite as the default database engine
+        'NAME': os.environ.get('DATABASE_DIR', BASE_DIR / 'db.sqlite3'),
     }
 }
 
+# Set the STATIC_URL
+STATIC_URL = '/static/'  # Replace '/static/' with the URL or path where you want to serve static files from
 
+# Set the path to the directory where static files will be collected
+# STATIC_ROOT = '/'
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -116,8 +133,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    	   'rest_framework.authentication.TokenAuthentication',
+    	   'rest_framework.authentication.SessionAuthentication',
+    ]
+} 
